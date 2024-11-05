@@ -10,10 +10,9 @@
 
 (provide
  (contract-out
-  [struct formula ()]
+  [formula? (-> any/c boolean?)]
   [struct l-prop ([name symbol?])]
   [struct l-neg ([subformula formula?])]
   [struct l-and ([left formula?] [right formula?])]
   [struct l-or ([left formula?] [right formula?])]
-  [struct l-impl ([left formula?] [right formula?])]
-  ))
+  [struct l-impl ([left formula?] [right formula?])]))
