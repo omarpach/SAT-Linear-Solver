@@ -92,3 +92,12 @@
       (and (check-mark (first lst-hijos))
            (aux-func (rest lst-hijos)))))
   (aux-func (get-neighbors r-dag 'root)))
+
+(define (sat? formula)
+  (define dag
+    (ast->dag formula))
+  (define constraints
+    (top-down-processing dag))
+  (define inverted-dag
+    (invert-graph dag))
+  (bottom-up-processing dag inverted-dag constraints))

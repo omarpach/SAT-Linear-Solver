@@ -53,4 +53,5 @@
 
 (provide
   (contract-out
-    [ast->dag (-> formula? graph?)]))
+    [ast->dag (-> formula? graph?)]
+    [invert-graph (-> graph? graph?)]))
