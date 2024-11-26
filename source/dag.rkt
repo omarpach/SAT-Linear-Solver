@@ -53,5 +53,4 @@
 
 (provide
   (contract-out
-    [has? (-> list? symbol? boolean?)]
     [ast->dag (-> formula? graph?)]))
