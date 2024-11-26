@@ -32,10 +32,15 @@
   (define root
     (car (get-neighbors dag 'root)))
   (assign-mark ht root)
-  (define (check-marks ht nodo))
   ht)
 
-(define (bottom-up-processing r-dag ht)
+(define (bottom-up-processing dag r-dag ht)
+  (define (obtener-otro-hijo dag hijo padre)
+    (let ([hijos (get-neighbors dag padre)])
+      (if (eq? (first hijos)
+               hijo)
+        (second hijos)
+        (first hijos))))
   (define (check-mark nodo-act)
     (define lst-padre
       (get-neighbors r-dag nodo-act))
@@ -44,7 +49,7 @@
        #t]
       [else
         (define val-nodo-act
-          hash-ref ht nodo-act)
+          (hash-ref ht nodo-act))
         (define nodo-padre
           (car (lst-padre)))
         (define val-nodo-padre
@@ -56,5 +61,34 @@
              (check-mark nodo-padre)
              #f)]
           [(regexp #rx"and*")
-           (define otro-hijo
-             )])])))
+           (define val-otro-hijo
+             (hash-ref ht (obtener-otro-hijo dag nodo-act nodo-padre)))
+           (cond
+             [(and val-nodo-act val-otro-hijo)
+              (if (eq? val-nodo-padre #t)
+                (check-mark nodo-padre)
+                #f)]
+             [(eq? val-nodo-act #f)
+              (if (eq? val-nodo-padre #f)
+                (check-mark nodo-padre)
+                #f)]
+             [(eq? val-otro-hijo #f)
+              (if (eq? val-nodo-padre #f)
+                (check-mark nodo-padre)
+                #f)]
+             [(and (eq? val-nodo-act #t)
+                   (eq? val-nodo-padre #f))
+              (if (eq? val-otro-hijo #f)
+                (check-mark nodo-padre)
+                #f)]
+             [(and (eq? val-otro-hijo #t)
+                   (eq? val-nodo-padre #f))
+              (if (eq? val-nodo-act #f)
+                (check-mark nodo-padre)
+                #f)])])]))
+  (define (aux-func lst-hijos)
+    (if (null?)
+      #t
+      (and (check-mark (first lst-hijos))
+           (aux-func (rest lst-hijos)))))
+  (aux-func (get-neighbors r-dag 'root)))
