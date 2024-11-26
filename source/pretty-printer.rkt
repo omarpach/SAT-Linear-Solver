@@ -5,6 +5,10 @@
 (define f1
   (l-prop 'p))
 
+(define f2
+  (l-neg (l-and (l-prop 'p)
+                (l-prop 'q))))
+
 (define (prettier formula)
   (match formula
     [(l-prop p)
@@ -19,3 +23,7 @@
      (printf "∧")
      (prettier right)
      (printf ")")]))
+
+(provide
+  (contract-out
+    [prettier (-> formula? void?)]))
