@@ -51,7 +51,7 @@
         (define val-nodo-act
           (hash-ref ht nodo-act))
         (define nodo-padre
-          (car (lst-padre)))
+          (car lst-padre))
         (define val-nodo-padre
           (hash-ref ht nodo-padre))
         (match (symbol->string nodo-padre)
@@ -87,7 +87,7 @@
                 (check-mark nodo-padre)
                 #f)])])]))
   (define (aux-func lst-hijos)
-    (if (null?)
+    (if (null? lst-hijos)
       #t
       (and (check-mark (first lst-hijos))
            (aux-func (rest lst-hijos)))))
@@ -101,3 +101,13 @@
   (define inverted-dag
     (invert-graph dag))
   (bottom-up-processing dag inverted-dag constraints))
+
+(provide
+ (contract-out
+  [top-down-processing (-> (and/c graph? unweighted-graph?)
+                           (and/c hash? hash-equal? (not/c immutable?) hash-strong?))]
+  [bottom-up-processing (-> (and/c graph? unweighted-graph?)
+                            (and/c graph? unweighted-graph?)
+                            (and/c hash? hash-equal? (not/c immutable?) hash-strong?)
+                            boolean?)]
+  [sat? (-> formula? boolean?)]))
