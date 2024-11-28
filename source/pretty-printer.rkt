@@ -22,6 +22,18 @@
      (prettier left)
      (printf "∧")
      (prettier right)
+     (printf ")")]
+    [(l-or left right)
+     (printf "(")
+     (prettier left)
+     (printf "∨")
+     (prettier right)
+     (printf ")")]
+    [(l-or left right)
+     (printf "(")
+     (prettier left)
+     (printf "→")
+     (prettier right)
      (printf ")")]))
 
 (provide
